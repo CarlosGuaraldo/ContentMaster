@@ -1,6 +1,11 @@
-const Home =() => {
+import Quill from '@/components/QuillEditor'
+
+const Home = () => {
   return (
-    <>home</>
+    <>
+      Quill:
+      <Quill />
+    </>
   );
 }
 
