@@ -3,7 +3,8 @@
 import dynamic from 'next/dynamic'
 import { useState, useMemo, useRef } from 'react'
 import 'react-quill/dist/quill.snow.css'
-import axios from 'axios'
+import { uploadFile } from '@/app/actions/upload'
+import { saveRichTextContent } from '@/app/actions/save'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -14,7 +15,8 @@ const toolbarOptions = [
     ['link', 'image'],
 ]
 
-const handleImageUpload = async () => {
+async function handleImageUpload() {
+
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.setAttribute('accept', 'image/*')
@@ -28,14 +30,16 @@ const handleImageUpload = async () => {
 
             try {
                 console.log(file)
-                const response = await axios.post('/api/upload', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                })
+                const response = await uploadFile(formData)
+                if (response.success) {
+                    const imageUrl = `/uploads/${file.name.replace(/ /g, '_')}`
+                    const quill = (window as any).quillRef.getEditor()
+                    const range = quill.getSelection()
 
-                // const imageUrl = response.data.url
-                // const quill = (window as any).quillRef.getEditor()
-                // const range = quill.getSelection()
-                // quill.insertEmbed(range.index, 'image', imageUrl)
+                    quill.insertEmbed(range.index, 'image', imageUrl)
+                } else {
+                    console.error('Failed to upload image:', response.message)
+                }
             } catch (error) {
                 console.error('Error uploading image:', error)
             }
@@ -43,7 +47,17 @@ const handleImageUpload = async () => {
     }
 }
 
+const sanitiseContent = (content: string): string => {
+    return content.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+}
+
+const save = async (content: string) => {
+    console.log(sanitiseContent(content))
+    saveRichTextContent(content)
+}
+
 const QuillEditor = () => {
+    const quillRef = useRef()
     const [content, setContent] = useState<string>('')
 
     const handleChange = (value: string) => {
@@ -52,17 +66,16 @@ const QuillEditor = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        console.log('Editor content:', content)
+        console.log(content)
+        save(content)
     }
 
     const modules = useMemo(() => ({
         toolbar: {
             container: toolbarOptions,
-            // TODO: Setup the API to save, then return an URL for the rich text editor
-
-            // handlers: {
-            //     image: handleImageUpload,
-            // },
+            handlers: {
+                image: handleImageUpload,
+            },
         },
     }), [])
 
@@ -74,6 +87,7 @@ const QuillEditor = () => {
                         value={content}
                         onChange={handleChange}
                         modules={modules}
+                    // ref={quillRef}
                     />
                 </div>
                 <button type='submit'>Save</button>
