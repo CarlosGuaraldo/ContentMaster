@@ -1,8 +1,10 @@
 'use server'
 
+import AWS from 'aws-sdk'
 import path from 'path'
 import { writeFile } from 'fs/promises'
 import { PrismaClient } from '@prisma/client'
+import { PutObjectRequest } from 'aws-sdk/clients/s3'
 
 const prisma = new PrismaClient()
 
@@ -24,13 +26,30 @@ export async function uploadFile(formData: FormData): Promise<{
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const filename = Date.now() + file.name.replace(/ /g, '_')
-    console.log('Saving file:', filename)
+    console.log('Uploading file:', filename)
 
     try {
-        const uploadPath = path.join(process.cwd(), 'public/uploads', filename)
+        const s3 = new AWS.S3()
+        const data = await s3.listBuckets().promise()
 
-        await writeFile(uploadPath, buffer)
+        const bucketName = process.env.AWS_BUCKET_NAME
+        if (!bucketName) {
+            return { message: 'Bucket is not defined.', success: false }
+        }
 
+        const bucket = data.Buckets?.find(bucket => bucket.Name === process.env.AWS_BUCKET_NAME)
+        if (!bucket) {
+            return { message: 'Bucket not found.', success: false }
+        }
+
+        const params: PutObjectRequest = {
+            Bucket: bucket.Name as string,
+            Key: filename,
+            Body: buffer,
+            ContentType: file.type
+        }
+
+        await s3.upload(params).promise()
         return { message: 'File uploaded successfully!', success: true }
     } catch (error) {
         console.error('File upload error:', error)

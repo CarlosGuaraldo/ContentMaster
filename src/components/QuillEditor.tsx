@@ -87,7 +87,7 @@ const QuillEditor = () => {
                         value={content}
                         onChange={handleChange}
                         modules={modules}
-                    // ref={quillRef}
+                        ref={quillRef}
                     />
                 </div>
                 <button type='submit'>Save</button>
