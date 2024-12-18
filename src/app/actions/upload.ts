@@ -1,25 +1,14 @@
 'use server'
 
-import AWS from 'aws-sdk'
-import path from 'path'
-import { writeFile } from 'fs/promises'
-import { PrismaClient } from '@prisma/client'
-import { PutObjectRequest } from 'aws-sdk/clients/s3'
-
-const prisma = new PrismaClient()
+import { S3Client, PutObjectCommand, PutObjectCommandInput, GetObjectCommand } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 export async function uploadFile(formData: FormData): Promise<{
     message: string,
-    success: boolean
+    success: boolean,
+    url?: string
 }> {
-    await prisma.$connect().then(() => {
-        console.log('Database connected successfully')
-    }).catch((error) => {
-        console.log(error)
-    })
-
     const file = formData.get('file') as File | null
-
     if (!file) {
         return { message: 'No files received.', success: false }
     }
@@ -29,30 +18,33 @@ export async function uploadFile(formData: FormData): Promise<{
     console.log('Uploading file:', filename)
 
     try {
-        const s3 = new AWS.S3()
-        const data = await s3.listBuckets().promise()
+        const client = new S3Client({ region: process.env.AWS_REGION })
 
-        const bucketName = process.env.AWS_BUCKET_NAME
-        if (!bucketName) {
-            return { message: 'Bucket is not defined.', success: false }
-        }
-
-        const bucket = data.Buckets?.find(bucket => bucket.Name === process.env.AWS_BUCKET_NAME)
-        if (!bucket) {
-            return { message: 'Bucket not found.', success: false }
-        }
-
-        const params: PutObjectRequest = {
-            Bucket: bucket.Name as string,
+        const params: PutObjectCommandInput = {
+            Bucket: process.env.AWS_BUCKET_NAME as string,
             Key: filename,
             Body: buffer,
             ContentType: file.type
         }
 
-        await s3.upload(params).promise()
-        return { message: 'File uploaded successfully!', success: true }
+        const command = new PutObjectCommand(params)
+        const upload = await client.send(command)
+        console.log('Upload Success', upload)
+
+        const getObjectParams = { Bucket: process.env.AWS_BUCKET_NAME, Key: filename }
+        const getObjectCommand = new GetObjectCommand(getObjectParams)
+        const url = await getSignedUrl(client, getObjectCommand, { expiresIn: 3600 })
+
+        return {
+            message: `File uploaded successfully!`,
+            success: true,
+            url: url
+        }
     } catch (error) {
         console.error('File upload error:', error)
-        return { message: 'Failed to upload file.', success: false }
+        return {
+            message: `Failed to upload file. Error: ${error}`,
+            success: false
+        }
     }
 }

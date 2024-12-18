@@ -28,10 +28,9 @@ async function handleImageUpload(this: any /* TODO type */) {
             formData.append("file", file);
 
             try {
-                console.log(file);
                 const response = await uploadFile(formData);
                 if (response.success) {
-                    const imageUrl = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmCqPQkaJwpCsMG4znVnNw3fie_li_N3kL3R4Cecusrs4Z2hKL7TjCnyd4UGzzaGkz0Qo`;
+                    const imageUrl = response.url
                     const quill = this.quill
                     console.log(quill)
 
