@@ -2,8 +2,10 @@
 
 import { JSDOM } from 'jsdom'
 import DOMPurify from 'dompurify'
+import { PrismaClient } from '@prisma/client'
 
 const { window } = new JSDOM('')
+const prisma = new PrismaClient()
 const DOMPurifyInstance = DOMPurify(window)
 
 export async function saveRichTextContent(content: string): Promise<{
@@ -11,11 +13,18 @@ export async function saveRichTextContent(content: string): Promise<{
     success: boolean
 }> {
     try {
-        const test = `<p>my content <strong><em><u>customised </u></em></strong><script>alert('hey')</script>  </p>`
-        console.log(test)
+        const sanitisedContent = DOMPurifyInstance.sanitize(content)
+        console.log(sanitisedContent)
 
-        const sanitizedContent = DOMPurifyInstance.sanitize(test)
-        console.log(sanitizedContent)
+        const newContent = await prisma.richTextContent.create({
+            data: {
+                title: 'home page content',
+                content: sanitisedContent,
+                authorId: null,
+            },
+        })
+
+        console.log(newContent)        
 
         return { message: 'Content saved successfully!', success: true }
     } catch (error) {
