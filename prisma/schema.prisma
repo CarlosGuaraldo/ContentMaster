@@ -8,10 +8,10 @@ datasource db {
 }
 
 model RichTextContent {
-  id Int @id @default(autoincrement())
-  title String
-  content String @db.LongText
-  authorId Int?
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String   @db.LongText
+  authorId  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

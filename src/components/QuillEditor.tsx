@@ -3,6 +3,7 @@
 import { saveRichTextContent } from '@/app/actions/save'
 import { uploadFile } from '@/app/actions/upload'
 import dynamic from 'next/dynamic'
+import Quill from 'quill'
 import { useMemo, useRef, useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
 
