@@ -1,7 +1,7 @@
 'use server'
 
-import { S3Client, PutObjectCommand, PutObjectCommandInput, GetObjectCommand } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import config from '@/config/config'
+import { S3Client, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3'
 
 export async function uploadFile(formData: FormData): Promise<{
     message: string,
@@ -13,27 +13,25 @@ export async function uploadFile(formData: FormData): Promise<{
         return { message: 'No files received.', success: false }
     }
 
+    if (!config.file.allowedTypes.includes(file.type)) {
+        return { message: 'Invalid file type.', success: false }
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer())
-    const filename = Date.now() + file.name.replace(/ /g, '_')
-    console.log('Uploading file:', filename)
+    const fileType = file.type.split('/')[1]
+    const filename = `${Date.now()}${file.name.replace(/[^a-zA-Z0-9]/g, '')}.${fileType}`
 
     try {
-        const client = new S3Client({ region: process.env.AWS_REGION })
-
+        const client = new S3Client({ region: config.aws.region })
         const params: PutObjectCommandInput = {
-            Bucket: process.env.AWS_BUCKET_NAME as string,
+            Bucket: config.aws.bucketName,
             Key: filename,
             Body: buffer,
             ContentType: file.type
         }
-
         const command = new PutObjectCommand(params)
-        const upload = await client.send(command)
-        console.log('Upload Success', upload)
-
-        const getObjectParams = { Bucket: process.env.AWS_BUCKET_NAME, Key: filename }
-        const getObjectCommand = new GetObjectCommand(getObjectParams)
-        const url = await getSignedUrl(client, getObjectCommand, { expiresIn: 3600 })
+        await client.send(command)
+        const url = `${config.aws.objectUrlPrefix}${filename}`
 
         return {
             message: `File uploaded successfully!`,

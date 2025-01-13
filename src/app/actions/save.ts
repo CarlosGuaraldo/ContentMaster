@@ -14,8 +14,6 @@ export async function saveRichTextContent(content: string): Promise<{
 }> {
     try {
         const sanitisedContent = DOMPurifyInstance.sanitize(content)
-        console.log(sanitisedContent)
-
         const newContent = await prisma.richTextContent.create({
             data: {
                 title: 'home page content',
@@ -24,7 +22,7 @@ export async function saveRichTextContent(content: string): Promise<{
             },
         })
 
-        console.log(newContent)        
+        console.log(newContent)
 
         return { message: 'Content saved successfully!', success: true }
     } catch (error) {
