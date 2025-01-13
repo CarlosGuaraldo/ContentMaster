@@ -21,10 +21,8 @@ export async function getRichTextContent(): Promise<{
             }
         })
 
-        const sanitisedContent = DOMPurifyInstance.sanitize(richTextContent?.content || '')
-
         return {
-            content: sanitisedContent,
+            content: richTextContent?.content || '',
             message: '',
             success: true
         }
