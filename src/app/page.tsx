@@ -1,12 +1,14 @@
-import Quill from '@/components/QuillEditor'
+import RichTextViewer from "@/components/RichTextViewer";
 
 const Home = () => {
-  return (
-    <>
-      Quill:
-      <Quill />
-    </>
-  );
+    return (
+        <main>
+            <h1>Home Page</h1>
+            <section>
+                <RichTextViewer />
+            </section>
+        </main>
+    );
 }
 
 export default Home

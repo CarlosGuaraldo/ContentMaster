@@ -1,9 +1,8 @@
 'use client'
 
-import { saveRichTextContent } from '@/app/actions/save'
-import { uploadFile } from '@/app/actions/upload'
+import { saveRichTextContent } from '@/app/actions/admin/home/saveRichTextContent'
+import { uploadFile } from '@/app/actions/admin/home/uploadFile'
 import dynamic from 'next/dynamic'
-import Quill from 'quill'
 import { useMemo, useRef, useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
 
@@ -60,7 +59,7 @@ const save = async (content: string) => {
     saveRichTextContent(content)
 }
 
-const QuillEditor = () => {
+const RichTextEditor = () => {
     const quillRef = useRef()
     const [content, setContent] = useState<string>('')
 
@@ -101,4 +100,4 @@ const QuillEditor = () => {
     )
 }
 
-export default QuillEditor
+export default RichTextEditor

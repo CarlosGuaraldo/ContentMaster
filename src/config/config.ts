@@ -5,7 +5,7 @@ const config = {
         objectUrlPrefix: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
     },
     file: {
-        allowedTypes: ['image/jpeg', 'image/png', 'image/webp']
+        allowedTypes: (process.env.FILE_TYPES_ALLOWED as string).split(',') as string[]
     }
 }
 
