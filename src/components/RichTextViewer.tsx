@@ -1,12 +1,16 @@
 import { getRichTextContent } from "@/app/actions/getRichTextContent"
 
-const RichTextViewer = async () => {
+type RichTextViewerProps = {
+    id: string
+}
 
-    const content = await getRichTextContent();
+const RichTextViewer: React.FC<RichTextViewerProps> = async ({ id }) => {
+
+    const result = await getRichTextContent(id)
 
     return (
         <>
-            <div dangerouslySetInnerHTML={{ __html: content.content }} />
+            <div dangerouslySetInnerHTML={{ __html: result.content }} />
         </>
     )
 }

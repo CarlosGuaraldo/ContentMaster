@@ -1,28 +1,32 @@
 'use server'
 
-import { JSDOM } from 'jsdom'
 import { PrismaClient } from "@prisma/client"
-import DOMPurify from 'dompurify'
 
-const { window } = new JSDOM('')
 const prisma = new PrismaClient()
-const DOMPurifyInstance = DOMPurify(window)
-
-export async function getRichTextContent(): Promise<{
+export async function getRichTextContent(id: string): Promise<{
     content: string
     message: string
     success: boolean
 }> {
     try {
+        const numberId = Number(id)
 
-        const richTextContent = await prisma.richTextContent.findFirst({
-            orderBy: {
-                createdAt: 'desc'
+        if (isNaN(numberId)) {
+            return {
+                content: '',
+                message: 'Invalid id',
+                success: false
+            }
+        }
+
+        const result = await prisma.richTextContent.findUnique({
+            where: {
+                id: numberId
             }
         })
 
         return {
-            content: richTextContent?.content || '',
+            content: result?.content || '',
             message: '',
             success: true
         }
@@ -35,4 +39,3 @@ export async function getRichTextContent(): Promise<{
         }
     }
 }
-
