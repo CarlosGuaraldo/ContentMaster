@@ -4,17 +4,20 @@ import config from '@/config/config'
 import { S3Client, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3'
 
 export async function uploadFile(formData: FormData): Promise<{
-    message: string,
-    success: boolean,
-    url?: string
+    name?: string,
+    size?: number,
+    url?: string,
+    error: boolean,
+    errorMessage: string
 }> {
+    // TODO: enhance the security validations
     const file = formData.get('file') as File | null
     if (!file) {
-        return { message: 'No files received.', success: false }
+        return { errorMessage: 'No files received.', error: false }
     }
 
     if (!config.file.allowedTypes.includes(file.type)) {
-        return { message: 'Invalid file type.', success: false }
+        return { errorMessage: 'Invalid file type.', error: false }
     }
 
     const buffer = Buffer.from(await file.arrayBuffer())
@@ -34,15 +37,17 @@ export async function uploadFile(formData: FormData): Promise<{
         const url = `${config.aws.objectUrlPrefix}${filename}`
 
         return {
-            message: `File uploaded successfully!`,
-            success: true,
-            url: url
+            // message: `File uploaded successfully!`,
+            // success: true,
+            url: url,
+            error: false,
+            errorMessage: ''
         }
     } catch (error) {
         console.error('File upload error:', error)
         return {
-            message: `Failed to upload file. Error: ${error}`,
-            success: false
+            errorMessage: `Failed to upload file. Error: ${error}`,
+            error: true
         }
     }
 }
