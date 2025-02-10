@@ -1,4 +1,12 @@
+import { config } from 'dotenv';
+config();
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    env: {
+        HOST: process.env.HOST,
+        PORT: process.env.PORT
+    }
+};
 
 export default nextConfig;

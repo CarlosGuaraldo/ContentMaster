@@ -1,8 +1,16 @@
 const config = {
+    server: {
+        HOST: process.env.HOST!,
+        PORT: process.env.PORT!,
+        PROTOCOL: process.env.PROTOCOL!,
+        BASE_URL: `${process.env.PROTOCOL!}://${process.env.HOST!}:${process.env.PORT!}`
+    },
     aws: {
-        bucketName: process.env.AWS_BUCKET_NAME!,
-        region: process.env.AWS_REGION as string,
-        objectUrlPrefix: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
+        ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,
+        SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY!,
+        BUCKET_NAME: process.env.AWS_BUCKET_NAME!,
+        REGION: process.env.AWS_REGION!,
+        OBJECT_PREFFIX_URL: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
     },
     file: {
         allowedTypes: (process.env.FILE_TYPES_ALLOWED as string).split(',') as string[]

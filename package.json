@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "dotenv -c -- next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint"
   },
   "dependencies": {
@@ -14,21 +14,26 @@
     "@aws-sdk/s3-request-presigner": "^3.714.0",
     "@prisma/client": "^6.1.0",
     "@types/quill": "^2.0.14",
+    "aws-sdk": "^2.1692.0",
     "axios": "^1.7.7",
+    "cross-env": "^7.0.3",
     "dompurify": "^3.2.3",
+    "dotenv-cli": "^8.0.0",
     "jsdom": "^25.0.1",
     "next": "14.2.14",
     "react": "^18",
     "react-dom": "^18",
     "react-quill": "^2.0.0",
     "suneditor": "^2.47.3",
-    "suneditor-react": "^3.6.1"
+    "suneditor-react": "^3.6.1",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
     "@types/node": "^20.17.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "prisma": "^6.1.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"

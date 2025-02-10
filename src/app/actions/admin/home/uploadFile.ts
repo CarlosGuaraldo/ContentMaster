@@ -2,6 +2,9 @@
 
 import config from '@/config/config'
 import { S3Client, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function uploadFile(formData: FormData): Promise<{
     name?: string,
@@ -22,24 +25,30 @@ export async function uploadFile(formData: FormData): Promise<{
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const fileType = file.type.split('/')[1]
-    const filename = `${Date.now()}${file.name.replace(/[^a-zA-Z0-9]/g, '')}.${fileType}`
+    const fileName = `${Date.now()}${file.name.replace(/[^a-zA-Z0-9]/g, '')}.${fileType}`
 
     try {
-        const client = new S3Client({ region: config.aws.region })
+        const client = new S3Client({ region: config.aws.REGION })
         const params: PutObjectCommandInput = {
-            Bucket: config.aws.bucketName,
-            Key: filename,
+            Bucket: config.aws.BUCKET_NAME,
+            Key: fileName,
             Body: buffer,
             ContentType: file.type
         }
         const command = new PutObjectCommand(params)
         await client.send(command)
-        const url = `${config.aws.objectUrlPrefix}${filename}`
+        const s3Url = `${config.aws.OBJECT_PREFFIX_URL}${fileName}`
+        const image = await prisma.file.create({
+            data: {
+                name: fileName,
+                type: file.type,
+                s3Url: s3Url,
+            }
+        })
+        const URL = `${config.server.BASE_URL}/api/images/${image.id}/${image.name}`
 
         return {
-            // message: `File uploaded successfully!`,
-            // success: true,
-            url: url,
+            url: URL,
             error: false,
             errorMessage: ''
         }
