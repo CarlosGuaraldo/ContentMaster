@@ -6,20 +6,34 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextRequest) {
-    // I didn't like the way that I got the route params
-    const url = new URL(req.url)
-    const id = url.pathname.split('/').slice(-2, -1)[0]
-    const name = url.pathname.split('/').slice(-1)[0]
+/*
+TO DO: Handle this warning:
+(node:23164) NOTE: The AWS SDK for JavaScript (v2) is in maintenance mode.
+ SDK releases are limited to address critical bug fixes and security issues only.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12872) NOTE: The AWS SDK for JavaScript (v2) is in maintenance mode.
+ SDK releases are limited to address critical bug fixes and security issues only.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+*/
+
+export async function GET(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string, name: string }> }
+) {
+    const { id, name } = await params
 
     if (!id || !isUuid(id)) {
-        console.log('Invalid ID:', id);
-        return NextResponse.json({ error: 'Invalid image ID' }, { status: 400 });
+        return NextResponse.json({ error: 'Image not found' }, { status: 400 });
     }
 
     if (!name || name.trim().length === 0) {
-        console.log('Invalid name:', name);
-        return NextResponse.json({ error: 'Invalid image name' }, { status: 400 });
+        return NextResponse.json({ error: 'Image not found' }, { status: 400 });
     }
 
     try {
@@ -31,7 +45,6 @@ export async function GET(req: NextRequest) {
         });
 
         if (!image) {
-            console.log('Image not found in database');
             return NextResponse.json({ error: 'Image not found' }, { status: 404 });
         }
 
@@ -50,6 +63,7 @@ export async function GET(req: NextRequest) {
 
         const headers = new Headers();
         headers.set('Content-Type', data.ContentType!);
+        headers.set('Cache-Control', 'immutable, public');
         headers.set('Content-Length', data.ContentLength!.toString());
 
         const buffer = Buffer.from(data.Body as Uint8Array)
