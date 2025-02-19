@@ -1,6 +1,11 @@
-import NextAuth from 'next-auth'
-import GitHub from 'next-auth/providers/github'
+import NextAuth from "next-auth"
+import GitHub from "next-auth/providers/github"
 
-export const { auth, handlers } = NextAuth({
+export const config = {
     providers: [GitHub],
-})
+    pages: {
+        signIn: "/login",
+    },
+}
+
+export const { signIn, signOut, handlers } = NextAuth(config)
