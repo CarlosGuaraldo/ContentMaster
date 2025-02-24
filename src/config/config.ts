@@ -1,7 +1,7 @@
 const config = {
     auth: {
-        AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
-        AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
+        AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID!,
+        AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET!,
     },
     aws: {
         ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,
