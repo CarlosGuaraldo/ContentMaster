@@ -1,9 +1,7 @@
 const config = {
-    server: {
-        HOST: process.env.HOST!,
-        PORT: process.env.PORT!,
-        PROTOCOL: process.env.PROTOCOL!,
-        BASE_URL: `${process.env.PROTOCOL!}://${process.env.HOST!}:${process.env.PORT!}`
+    auth: {
+        AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
+        AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
     },
     aws: {
         ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,
@@ -14,7 +12,13 @@ const config = {
     },
     file: {
         allowedTypes: (process.env.FILE_TYPES_ALLOWED as string).split(',') as string[]
-    }
+    },
+    server: {
+        HOST: process.env.HOST!,
+        PORT: process.env.PORT!,
+        PROTOCOL: process.env.PROTOCOL!,
+        BASE_URL: `${process.env.PROTOCOL!}://${process.env.HOST!}:${process.env.PORT!}`
+    },
 }
 
 export default config
