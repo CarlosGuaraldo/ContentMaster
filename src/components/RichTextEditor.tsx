@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import 'suneditor/dist/css/suneditor.min.css'
-import { UploadBeforeHandler, UploadBeforeReturn, UploadInfo } from 'suneditor-react/dist/types/upload'
+import { UploadBeforeHandler, UploadBeforeReturn } from 'suneditor-react/dist/types/upload'
 import { uploadFile } from '@/app/actions/admin/home/uploadFile'
 import { useRef } from 'react'
 import SunEditorCore from 'suneditor/src/lib/core'
