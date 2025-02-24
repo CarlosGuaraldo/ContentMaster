@@ -8,7 +8,7 @@ const SignIn = async () => {
 
     return (
         <>
-            Sign-In component
+            <h1>Sign-In</h1>
             <GitHubSignIn />
         </>
     )
