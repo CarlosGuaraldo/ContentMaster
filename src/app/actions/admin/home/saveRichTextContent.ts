@@ -2,10 +2,9 @@
 
 import { JSDOM } from 'jsdom'
 import DOMPurify from 'dompurify'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/prisma'
 
 const { window } = new JSDOM('')
-const prisma = new PrismaClient()
 const DOMPurifyInstance = DOMPurify(window)
 
 export async function saveRichTextContent(content: string): Promise<{

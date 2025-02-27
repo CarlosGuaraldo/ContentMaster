@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import AWS from 'aws-sdk';
 import { validate as isUuid } from 'uuid';
 import config from '@/config/config';
 import { NextRequest, NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/prisma';
 
 /*
 TO DO: Handle this warning:

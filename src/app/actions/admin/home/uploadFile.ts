@@ -1,10 +1,8 @@
 'use server'
 
 import config from '@/config/config'
+import { prisma } from '@/prisma'
 import { S3Client, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
 
 export async function uploadFile(formData: FormData): Promise<{
     name?: string,
