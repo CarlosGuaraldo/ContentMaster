@@ -12,7 +12,7 @@ const Home = async () => {
             <section>
                 <div>
                     <p>Signed in as:</p>
-                    <p>id: {session.user?.id}</p>
+                    <p>id: {JSON.stringify(session)}</p>
                     <p>email: {session.user?.email}</p>
                     <p>name: {session.user?.name}</p>
                     <p>image: {session.user?.image}</p>

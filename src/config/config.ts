@@ -19,6 +19,9 @@ const config = {
         PROTOCOL: process.env.PROTOCOL!,
         BASE_URL: `${process.env.PROTOCOL!}://${process.env.HOST!}:${process.env.PORT!}`
     },
+    session: {
+        MAX_AGE: Number(process.env.SESSION_MAX_AGE) || 60
+    }
 }
 
 export default config
