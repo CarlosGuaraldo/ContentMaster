@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 
 const SignIn = async () => {
     const session = await auth()
-    if (session) redirect('/')
+    if (session) redirect('/admin')
 
     return (
         <>
