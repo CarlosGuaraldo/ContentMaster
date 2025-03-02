@@ -1,6 +1,6 @@
 'use server'
 
-import config from '@/config/config'
+import CONFIG from '@/config/config'
 import { prisma } from '@/prisma'
 import { S3Client, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3'
 
@@ -17,7 +17,7 @@ export async function uploadFile(formData: FormData): Promise<{
         return { errorMessage: 'No files received.', error: false }
     }
 
-    if (!config.FILE.ALLOWED_TYPES.includes(file.type)) {
+    if (!CONFIG.FILE.ALLOWED_TYPES.includes(file.type)) {
         return { errorMessage: 'Invalid file type.', error: false }
     }
 
@@ -26,16 +26,16 @@ export async function uploadFile(formData: FormData): Promise<{
     const fileName = `${Date.now()}${file.name.replace(/[^a-zA-Z0-9]/g, '')}.${fileType}`
 
     try {
-        const client = new S3Client({ region: config.AWS.REGION })
+        const client = new S3Client({ region: CONFIG.AWS.REGION })
         const params: PutObjectCommandInput = {
-            Bucket: config.AWS.BUCKET_NAME,
+            Bucket: CONFIG.AWS.BUCKET_NAME,
             Key: fileName,
             Body: buffer,
             ContentType: file.type
         }
         const command = new PutObjectCommand(params)
         await client.send(command)
-        const s3Url = `${config.AWS.OBJECT_PREFFIX_URL}${fileName}`
+        const s3Url = `${CONFIG.AWS.OBJECT_PREFFIX_URL}${fileName}`
         const image = await prisma.file.create({
             data: {
                 name: fileName,
@@ -43,7 +43,7 @@ export async function uploadFile(formData: FormData): Promise<{
                 s3Url: s3Url,
             }
         })
-        const URL = `${config.SERVER.BASE_URL}/api/images/${image.id}/${image.name}`
+        const URL = `${CONFIG.SERVER.BASE_URL}/api/images/${image.id}/${image.name}`
 
         return {
             url: URL,

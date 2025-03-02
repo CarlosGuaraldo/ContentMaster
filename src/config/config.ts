@@ -1,4 +1,4 @@
-const config = {
+const CONFIG = {
     AUTH: {
         AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID!,
         AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET!,
@@ -29,4 +29,4 @@ const config = {
     }
 }
 
-export default config
+export default CONFIG

@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
 import { validate as isUuid } from 'uuid';
-import config from '@/config/config';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
+import CONFIG from '@/config/config';
 
 /*
 TO DO: Handle this warning:
@@ -47,14 +47,14 @@ export async function GET(
         }
 
         AWS.config.update({
-            accessKeyId: config.AWS.ACCESS_KEY_ID,
-            secretAccessKey: config.AWS.SECRET_ACCESS_KEY,
-            region: config.AWS.REGION
+            accessKeyId: CONFIG.AWS.ACCESS_KEY_ID,
+            secretAccessKey: CONFIG.AWS.SECRET_ACCESS_KEY,
+            region: CONFIG.AWS.REGION
         });
 
         const s3 = new AWS.S3();
         const params = {
-            Bucket: config.AWS.BUCKET_NAME,
+            Bucket: CONFIG.AWS.BUCKET_NAME,
             Key: image.name,
         };
         const data = await s3.getObject(params).promise()
