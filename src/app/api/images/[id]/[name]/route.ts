@@ -47,14 +47,14 @@ export async function GET(
         }
 
         AWS.config.update({
-            accessKeyId: config.aws.ACCESS_KEY_ID,
-            secretAccessKey: config.aws.SECRET_ACCESS_KEY,
-            region: config.aws.REGION
+            accessKeyId: config.AWS.ACCESS_KEY_ID,
+            secretAccessKey: config.AWS.SECRET_ACCESS_KEY,
+            region: config.AWS.REGION
         });
 
         const s3 = new AWS.S3();
         const params = {
-            Bucket: config.aws.BUCKET_NAME,
+            Bucket: config.AWS.BUCKET_NAME,
             Key: image.name,
         };
         const data = await s3.getObject(params).promise()

@@ -9,6 +9,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     debug: true,
     providers: [GitHub],
     session: {
-        maxAge: config.session.MAX_AGE
+        maxAge: config.SESSION.MAX_AGE
     }
 });
