@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  EDITOR
+}
+
 model RichTextContent {
   id        Int      @id @default(autoincrement())
   title     String
@@ -32,6 +37,7 @@ model User {
   email         String?         @unique
   emailVerified DateTime?
   image         String?
+  role          Role            @default(EDITOR)
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
