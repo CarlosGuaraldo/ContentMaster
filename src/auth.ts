@@ -1,31 +1,58 @@
-import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/prisma";
-import CONFIG from "./config/config";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { Role } from "@prisma/client";
+import NextAuth, { DefaultSession } from "next-auth";
+import GitHub from "next-auth/providers/github";
+import CONFIG from "./config/config";
+
+declare module "next-auth" {
+  interface User {
+    role?: Role;
+  }
+
+  /**
+   * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      role: Role;
+      /**
+       * By default, TypeScript merges new interface properties and overwrites existing ones.
+       * In this case, the default session user properties will be overwritten,
+       * with the new ones defined above. To keep the default session user properties,
+       * you need to add them back into the newly declared interface.
+       */
+    } & DefaultSession["user"];
+  }
+}
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-    adapter: PrismaAdapter(prisma), // Fix type error here
-    debug: true,
-    providers: [GitHub({
-        profile(profile) {
-            return {
-                id: String(profile.id),
-                email: profile.email,
-                image: profile.avatar_url,
-                name: profile.name,
-                role: Role.EDITOR,
-            }
-        }
-    })],
-    session: {
-        maxAge: CONFIG.SESSION.MAX_AGE,
+  adapter: PrismaAdapter(prisma),
+  debug: true,
+  providers: [
+    GitHub({
+      profile(profile) {
+        return {
+          id: String(profile.id),
+          email: profile.email,
+          image: profile.avatar_url,
+          name: profile.name,
+          role: Role.EDITOR,
+        };
+      },
+      clientId: CONFIG.AUTH.AUTH_GITHUB_ID,
+      clientSecret: CONFIG.AUTH.AUTH_GITHUB_SECRET,
+    }),
+  ],
+  session: {
+    maxAge: CONFIG.SESSION.MAX_AGE,
+  },
+  callbacks: {
+    async session({ session, user }) {
+      if (user.role) {
+        session.user.role = user.role;
+      }
+      return session;
     },
-    callbacks: {
-        async session({ session, user }) {
-            session.user.role = user.role
-            return session;
-        },
-    },
+  },
 });
