@@ -7,7 +7,7 @@ const AdminLayout = async ({
     children: React.ReactNode
 }) => {
     const session = await auth()
-    if (!session) redirect('/signin')
+    if (!session) redirect('/login')
 
     return (
         <>

@@ -1,10 +1,7 @@
 import { auth } from "@/auth";
-import SignOut from "@/components/SignOut";
-import { redirect } from "next/navigation";
 
 const Home = async () => {
     const session = await auth()
-    if (!session) redirect('/signin')
 
     return (
         <main>
@@ -13,12 +10,11 @@ const Home = async () => {
                 <div>
                     <p>Signed in as:</p>
                     <p>id: {JSON.stringify(session)}</p>
-                    <p>email: {session.user?.email}</p>
-                    <p>name: {session.user?.name}</p>
-                    <p>image: {session.user?.image}</p>
-                    <p>expires: {session.expires}</p>
+                    <p>email: {session?.user?.email}</p>
+                    <p>name: {session?.user?.name}</p>
+                    <p>image: {session?.user?.image}</p>
+                    <p>expires: {session?.expires}</p>
                 </div>
-                <SignOut />
             </section>
         </main>
     );
