@@ -4,6 +4,7 @@ import { Role } from "@prisma/client";
 import NextAuth, { DefaultSession } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import CONFIG from "./config/config";
+import Keycloak from "next-auth/providers/keycloak";
 
 declare module "next-auth" {
   interface User {
@@ -43,6 +44,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       clientId: CONFIG.AUTH.AUTH_GITHUB_ID,
       clientSecret: CONFIG.AUTH.AUTH_GITHUB_SECRET,
     }),
+    Keycloak
   ],
   session: {
     maxAge: CONFIG.SESSION.MAX_AGE,
