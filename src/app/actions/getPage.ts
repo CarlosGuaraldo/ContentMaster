@@ -2,7 +2,7 @@
 
 import { prisma } from "@/prisma"
 
-export async function getRichTextContent(id: string): Promise<{
+export async function getPage(id: string): Promise<{
     content: string
     message: string
     success: boolean
@@ -18,7 +18,7 @@ export async function getRichTextContent(id: string): Promise<{
             }
         }
 
-        const result = await prisma.richTextContent.findUnique({
+        const result = await prisma.page.findUnique({
             where: {
                 id: numberId
             }

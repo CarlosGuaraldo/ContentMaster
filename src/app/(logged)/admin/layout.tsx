@@ -10,10 +10,7 @@ const AdminLayout = async ({
     if (!session) redirect('/login')
 
     return (
-        <>
-            <p>{JSON.stringify(session.user)}</p>
-            {children}
-        </>
+        <>{children}</>
     )
 }
 

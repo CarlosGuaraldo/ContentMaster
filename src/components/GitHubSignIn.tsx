@@ -1,4 +1,5 @@
 import { signIn } from "@/auth"
+import Button from "./Button"
 
 const GitHubSignIn = () => {
     return (
@@ -7,9 +8,7 @@ const GitHubSignIn = () => {
                 'use server'
                 await signIn('github')
             }}>
-                <button>
-                    Continue with GitHub
-                </button>
+                <Button label="Sign-in with Github" type="submit" />
             </form >
         </>
     )

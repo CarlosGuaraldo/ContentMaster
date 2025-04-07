@@ -1,21 +1,22 @@
 import { auth } from "@/auth"
 import Link from "next/link"
 import SignOut from "./SignOut"
+import styles from "@/components/Header.module.css"
 
 const Header = async () => {
     const session = await auth()
 
     return (
-        <header>
-            <h1>
-                <Link href="/">Content Master</Link>
+        <header className={styles.header}>
+            <h1 className={styles.title}>
+                <Link href="/" className={styles.link}>Content Master</Link>
             </h1>
-            <nav>
+            <nav className={styles.nav}>
                 {!session ? (
-                    <Link href="/login">Login</Link>
+                    <Link href="/login" className={styles.navLink}>Login</Link>
                 ) : (
-                    <div>
-                        <span>Welcome, {session.user.name}!</span>
+                    <div className={styles.userSection}>
+                        <span className={styles.welcomeText}>Welcome, {session.user.name}!</span>
                         <SignOut />
                     </div>
                 )}

@@ -1,0 +1,63 @@
+.button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: #0070f3;
+    border: none;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.button:hover {
+    background-color: #005bb5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button:active {
+    background-color: #004a8f;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button:focus {
+    outline: 2px solid #005bb5;
+    outline-offset: 2px;
+}
+
+.buttonSignOut {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: #f54242;
+    /* A soft red tone for sign-out */
+    border: none;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.buttonSignOut:hover {
+    background-color: #d03131;
+    /* A slightly darker tone on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.buttonSignOut:active {
+    background-color: #b02828;
+    /* Further darker tone for active state */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.buttonSignOut:focus {
+    outline: 2px solid #d03131;
+    /* Focus outline matches the hover color */
+    outline-offset: 2px;
+}

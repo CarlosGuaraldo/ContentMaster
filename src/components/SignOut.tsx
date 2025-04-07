@@ -1,4 +1,6 @@
 import { signOut } from "@/auth";
+import Button from "./Button";
+import styles from '@/components/Button.module.css'
 
 const SignOut = () => {
     return (
@@ -7,9 +9,7 @@ const SignOut = () => {
                 'use server'
                 await signOut()
             }}>
-                <button type="submit">
-                    Sign Out
-                </button>
+                <Button label="Sign Out" class={styles.buttonSignOut} />
             </form>
         </>
     );

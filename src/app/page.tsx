@@ -1,21 +1,24 @@
 import { auth } from "@/auth";
+import Link from "next/link";
+import styles from '@/components/Home.module.css';
+
 
 const Home = async () => {
     const session = await auth()
 
     return (
-        <main>
-            <h1>Home Page</h1>
-            <section>
-                <div>
-                    <p>Signed in as:</p>
-                    <p>id: {JSON.stringify(session)}</p>
-                    <p>email: {session?.user?.email}</p>
-                    <p>name: {session?.user?.name}</p>
-                    <p>image: {session?.user?.image}</p>
-                    <p>expires: {session?.expires}</p>
+        <main className={styles.main}>
+            {session ? (
+                <ul className={styles.list}>
+                    <li className={styles.listItem}>
+                        <Link href="/admin/home" className={styles.link}>Go to edit content</Link>
+                    </li>
+                </ul>
+            ) : (
+                <div className={styles.message}>
+                    Please log in to start creating beautiful interfaces.
                 </div>
-            </section>
+            )}
         </main>
     );
 }

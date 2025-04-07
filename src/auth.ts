@@ -29,7 +29,6 @@ declare module "next-auth" {
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  debug: true,
   providers: [
     GitHub({
       profile(profile) {

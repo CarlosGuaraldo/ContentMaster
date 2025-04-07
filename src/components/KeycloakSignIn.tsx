@@ -1,4 +1,5 @@
 import { signIn } from "@/auth"
+import Button from "./Button"
 
 const KeycloakSignIn = () => {
     return (
@@ -7,9 +8,7 @@ const KeycloakSignIn = () => {
                 'use server'
                 await signIn('keycloak')
             }}>
-                <button>
-                    Continue with Keycloak
-                </button>
+                <Button label="Sign-in with Keycloak" />
             </form >
         </>
     )

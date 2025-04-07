@@ -12,13 +12,17 @@ enum Role {
   EDITOR
 }
 
-model RichTextContent {
+model Page {
   id        Int      @id @default(autoincrement())
   title     String
+  route     String
   content   String   @db.LongText
-  authorId  Int?
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model File {
@@ -45,6 +49,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Page      Page[]
 }
 
 model Account {
