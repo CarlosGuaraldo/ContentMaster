@@ -1,5 +1,5 @@
 import { auth } from "@/auth"
-import SignIn from "@/components/SignIn"
+import SignIn from "@/components/auth/SignIn"
 import { redirect } from "next/navigation"
 
 const Login = async () => {

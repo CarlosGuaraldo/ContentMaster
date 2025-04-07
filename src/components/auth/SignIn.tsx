@@ -1,8 +1,8 @@
 import { auth } from "@/auth"
-import { GitHubSignIn } from "@/components/GitHubSignIn"
+import { GitHubSignIn } from "@/components/auth/GitHubSignIn"
 import { redirect } from "next/navigation"
-import { KeycloakSignIn } from "./KeycloakSignIn"
-import styles from '@/components/SignIn.module.css'
+import { KeycloakSignIn } from "@/components/auth/KeycloakSignIn"
+import styles from '@/components/auth/SignIn.module.css'
 
 const SignIn = async () => {
     const session = await auth()

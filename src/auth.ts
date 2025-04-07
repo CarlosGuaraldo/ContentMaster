@@ -3,7 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { Role } from "@prisma/client";
 import NextAuth, { DefaultSession } from "next-auth";
 import GitHub from "next-auth/providers/github";
-import CONFIG from "./config/config";
+import CONFIG from "@/config/config";
 import Keycloak from "next-auth/providers/keycloak";
 
 declare module "next-auth" {

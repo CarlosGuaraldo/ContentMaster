@@ -1,7 +1,7 @@
 import { auth } from "@/auth"
 import Link from "next/link"
-import SignOut from "./SignOut"
-import styles from "@/components/Header.module.css"
+import SignOut from "@/components/auth/SignOut"
+import styles from "@/components/header/Header.module.css"
 
 const Header = async () => {
     const session = await auth()

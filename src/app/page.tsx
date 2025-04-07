@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import Link from "next/link";
-import styles from '@/components/Home.module.css';
+import styles from '@/components/home/Home.module.css';
 
 
 const Home = async () => {

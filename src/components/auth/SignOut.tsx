@@ -1,6 +1,6 @@
 import { signOut } from "@/auth";
-import Button from "./Button";
-import styles from '@/components/Button.module.css'
+import Button from "@/components/buttons/Button";
+import styles from '@/components/buttons/Button.module.css'
 
 const SignOut = () => {
     return (
