@@ -6,6 +6,7 @@ import { UploadBeforeHandler, UploadBeforeReturn } from 'suneditor-react/dist/ty
 import { uploadFile } from '@/app/actions/admin/home/uploadFile'
 import { useRef } from 'react'
 import SunEditorCore from 'suneditor/src/lib/core'
+import CONFIG from '@/config/config'
 
 const SunEditor = dynamic(() => import('suneditor-react'), {
     ssr: false
@@ -24,7 +25,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ onChange }) => {
 
     const onImageUploadBefore = (files: Array<File>, info: object, uploadHandler: UploadBeforeHandler): UploadBeforeReturn => {
         const maxFileSize = 500 * 1024 // 500 KB
-        const allowedFormats = ['image/jpeg', 'image/png', 'image/webp']
+        
+        const allowedFormats = CONFIG.FILE.ALLOWED_TYPES
 
         if (!files || !files[0]) {
             uploadHandler('At least one file needs to be uploaded')

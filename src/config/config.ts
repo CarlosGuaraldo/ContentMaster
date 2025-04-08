@@ -11,7 +11,7 @@ const CONFIG = {
         OBJECT_PREFFIX_URL: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
     },
     FILE: {
-        ALLOWED_TYPES: (process.env.FILE_TYPES_ALLOWED as string).split(',') as string[]
+        ALLOWED_TYPES: (process.env.NEXT_PUBLIC_FILE_TYPES_ALLOWED as string).split(',') as string[]
     },
     SERVER: {
         HOST: process.env.HOST!,

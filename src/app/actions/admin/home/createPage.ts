@@ -3,7 +3,6 @@
 import { JSDOM } from 'jsdom'
 import DOMPurify from 'dompurify'
 import { prisma } from '@/prisma'
-import { User } from '@prisma/client'
 
 const { window } = new JSDOM('')
 const DOMPurifyInstance = DOMPurify(window)
@@ -12,8 +11,7 @@ type createPageProps = {
     title: string
     route: string
     content: string
-    userId?: string
-    user?: User
+    userId: string
 }
 
 export async function createPage(props: createPageProps): Promise<{
@@ -22,17 +20,18 @@ export async function createPage(props: createPageProps): Promise<{
 }> {
     try {
         console.log(props);
-        
-        const sanitisedContent = DOMPurifyInstance.sanitize(props.content)
-        // const newContent = await prisma.page.create({
-        //     data: {
-        //         title: props.title,
-        //         route: props.route,
-        //         content: sanitisedContent,
-        //         userId: props.userId,
-        //     },
-        // })
 
+        const sanitisedContent = DOMPurifyInstance.sanitize(props.content)
+        const newPage = await prisma.page.create({
+            data: {
+                title: props.title,
+                route: props.route,
+                userId: props.userId,
+                content: sanitisedContent,
+            },
+        })
+
+        console.log(newPage);
         return { message: 'Content saved successfully!', success: true }
     } catch (error) {
         console.error('Error saving content:', error)

@@ -1,4 +1,5 @@
 import { auth } from "@/auth"
+import { SessionProvider } from "next-auth/react"
 import { redirect } from "next/navigation"
 
 const AdminLayout = async ({
@@ -10,7 +11,9 @@ const AdminLayout = async ({
     if (!session) redirect('/login')
 
     return (
-        <>{children}</>
+        <SessionProvider>
+            {children}
+        </SessionProvider>
     )
 }
 

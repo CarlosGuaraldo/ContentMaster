@@ -4,15 +4,29 @@ import { useState } from 'react';
 import { createPage } from '@/app/actions/admin/home/createPage';
 import styles from '@/components/admin/home/AdminHome.module.css';
 import dynamic from 'next/dynamic';
+import { useSession } from 'next-auth/react';
 
 const RichTextEditorWrapper = dynamic(() => import('@/components/richTextEditor/RichTextEditorWrapper'), {
     ssr: false,
 });
 
 const AdminHomeClientPage = () => {
+    const { data: session, status } = useSession()
     const [editorContent, setEditorContent] = useState('');
     const [pageTitle, setPageTitle] = useState('');
     const [pageRoute, setPageRoute] = useState('');
+
+    if (status === "loading") {   
+        return <>loading</>
+    }
+    if (status === "unauthenticated") {   
+        return <>loading</>
+    }
+
+    const userId = session?.user.id
+    if (!userId) {
+        throw new Error("");
+    }
 
     const handleEditorChange = (content: string) => {
         setEditorContent(content);
@@ -43,6 +57,7 @@ const AdminHomeClientPage = () => {
                 title: pageTitle,
                 route: pageRoute,
                 content: editorContent,
+                userId: userId
             });
 
             if (response.success) {
