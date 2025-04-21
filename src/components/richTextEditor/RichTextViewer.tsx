@@ -1,11 +1,11 @@
 import { getPage } from "@/app/actions/getPage";
 
 type RichTextViewerProps = {
-  id: string;
+  route: string;
 };
 
-const RichTextViewer: React.FC<RichTextViewerProps> = async ({ id }) => {
-  const result = await getPage(id);
+const RichTextViewer: React.FC<RichTextViewerProps> = async ({ route }) => {
+  const result = await getPage(route);
 
   return (
     <>

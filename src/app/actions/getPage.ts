@@ -2,25 +2,37 @@
 
 import { prisma } from "@/prisma"
 
-export async function getPage(id: string): Promise<{
+export async function getPage(route: string): Promise<{
     content: string
     message: string
     success: boolean
 }> {
-    try {
-        const numberId = Number(id)
-
-        if (isNaN(numberId)) {
-            return {
-                content: '',
-                message: 'Invalid id',
-                success: false
-            }
+    if (!route) {
+        return {
+            content: '',
+            message: 'Route is required',
+            success: false
         }
+    }
 
-        const result = await prisma.page.findUnique({
+    const sanitizedRoute = route
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '');
+
+    if (sanitizedRoute !== route) {
+        return {
+            content: '',
+            message: 'Invalid route format',
+            success: false
+        }
+    }
+
+    try {
+        const result = await prisma.page.findFirst({
             where: {
-                id: numberId
+                route: route
             }
         })
 
