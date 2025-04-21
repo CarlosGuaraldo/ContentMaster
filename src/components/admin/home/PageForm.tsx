@@ -40,6 +40,15 @@ const PageForm = ({ userId }: { userId: string }) => {
             <label htmlFor="pageTitle" className={inputStyles.label}>Page Title:</label>
             <PageTitleInput pageTitle={pageTitle} setPageTitle={setPageTitle} setPageRoute={setPageRoute} />
 
+            <label htmlFor="pageRoute" className={inputStyles.label}>Page Route:</label>
+            <input
+                type="text"
+                id="pageRoute"
+                value={pageRoute}
+                className={inputStyles.input}
+                readOnly
+            />
+
             <label className={inputStyles.label}>Page Content:</label>
             <RichTextEditorWrapper content={editorContent} onChange={handleEditorChange} />
 
