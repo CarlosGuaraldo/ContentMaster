@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
-import styles from '@/components/admin/home/AdminHome.module.css';
+import styles from '@/components/admin/home/styles/AdminHome.module.css';
 
-const AdminHomeClientPage = dynamic(() => import('@/components/admin/home/AdminHomeClientPage'), { ssr: false });
+const AdminHomeClientPage = dynamic(() => import('@/components/admin/home/ClientPage'), { ssr: false });
 
 const Page = async () => {
     return (
