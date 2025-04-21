@@ -19,7 +19,14 @@ export async function createPage(props: createPageProps): Promise<{
     success: boolean
 }> {
     try {
-        console.log(props);
+        const existingPage = await prisma.page.findFirst({
+            where: {
+                route: props.route,
+            },
+        })
+        if (existingPage) {
+            return { message: 'Page with this route already exists.', success: false }
+        }
 
         const sanitisedContent = DOMPurifyInstance.sanitize(props.content)
         const newPage = await prisma.page.create({
